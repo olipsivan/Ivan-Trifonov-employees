@@ -44,25 +44,19 @@ class PairEmployees extends React.Component<AppProps, AppState> {
     return date === "NULL" ? new Date() : new Date(year, month, day);
   }
 
+  normalDate(date: string) {
+    return date === "NULL" ? new Date() : new Date(date);
+  }
+
   getOverlappingDays(employeeOneDateFrom: string, employeeOneDateTo: string, employeeTwoDateFrom: string, employeeTwoDateTo: string) {
     let overlappingDays = 0;
 
-    let startDateOne: Date;
-    let endDateOne: Date;
-    let startDateTwo: Date;
-    let endDateTwo: Date;
+    const isFormatUK = Array.from(employeeOneDateFrom).some(char => char === "/");
 
-    if(Array.from(employeeOneDateFrom).find(char => char === "/")) {
-      startDateOne = this.formatDateUK(employeeOneDateFrom);
-      endDateOne = this.formatDateUK(employeeOneDateTo);
-      startDateTwo = this.formatDateUK(employeeTwoDateFrom);
-      endDateTwo = this.formatDateUK(employeeTwoDateTo);
-    } else {
-      startDateOne = new Date(employeeOneDateFrom);
-      endDateOne = employeeOneDateTo === "NULL" ? new Date() : new Date(employeeOneDateTo);
-      startDateTwo = new Date(employeeTwoDateFrom);
-      endDateTwo = employeeTwoDateTo === "NULL" ? new Date() : new Date(employeeTwoDateTo);
-    }
+    const startDateOne: Date = isFormatUK ? this.formatDateUK(employeeOneDateFrom) : this.normalDate(employeeOneDateFrom);
+    const endDateOne: Date = isFormatUK ? this.formatDateUK(employeeOneDateTo) : this.normalDate(employeeOneDateTo);
+    const startDateTwo: Date = isFormatUK ? this.formatDateUK(employeeTwoDateFrom) : this.normalDate(employeeTwoDateFrom);
+    const endDateTwo: Date = isFormatUK ? this.formatDateUK(employeeTwoDateTo) : this.normalDate(employeeTwoDateTo);
   
     const start = startDateOne < startDateTwo ? startDateTwo : startDateOne;
     const end = endDateOne < endDateTwo ? endDateOne : endDateTwo;
